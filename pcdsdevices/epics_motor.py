@@ -1083,6 +1083,36 @@ class MMC100(PCDSMotorBase):
     home_reverse = Cpt(EpicsSignal, '.MLN', kind='omitted')
 
 
+class BeckhoffNCAxisParameters(Device):
+    """
+    Parameters for the Beckhoff NC configuration. All are read only.
+    """
+    max_vel = Cpt(PytmcSignal, 'MaxVel', io='i', kind='config',
+                  doc='Maximum commandable speed of the axis in EU/s.')
+    max_accel = Cpt(PytmcSignal, 'MaxAccel', io='i', kind='config',
+                    doc='Maximum rate of increase in speed of the axis in EU/s^2.')
+    max_decel = Cpt(PytmcSignal, 'MaxDecel', io='i', kind='config',
+                    doc='Maximum rate of decrease in speed of the axis in EU/s^2.')
+    pos_lag_en = Cpt(PytmcSignal, 'PosLagEn', io='i', kind='config',
+                     doc='TRUE if position lag monitor (also known as stall monitor) is enabled.')
+    pos_lag_val = Cpt(PytmcSignal, 'PosLagVal', io='i', kind='config',
+                      doc='Maximum magnitude of position lag in EU.')
+    pos_lag_time = Cpt(PytmcSignal, 'PosLagTime', io='i', kind='config',
+                       doc='Maximum allowable duration outside of maximum position lag value in seconds.')
+    slim_min_en = Cpt(PytmcSignal, 'SLimMinEn', io='i', kind='config',
+                      doc='TRUE if controller static minimum limit is enabled.')
+    slim_max_en = Cpt(PytmcSignal, 'SLimMaxEn', io='i', kind='config',
+                      doc='TRUE if controller static maximum limit is enabled.')
+    slim_min = Cpt(PytmcSignal, 'SLimMin', io='i', kind='config',
+                   doc='Minimum commandable position of the axis in EU.')
+    slim_max = Cpt(PytmcSignal, 'SLimMax', io='i', kind='config',
+                   doc='Maximum commandable position of the axis in EU.')
+    enc_scaling = Cpt(PytmcSignal, 'EncScaling', io='i', kind='config',
+                      doc='Encoder scaling numerator / denominator in EU/COUNT.')
+    enc_offset = Cpt(PytmcSignal, 'EncOffset', io='i', kind='config',
+                     doc='Encoder offset in EU.')
+
+
 class BeckhoffAxisPLC(Device):
     """
     Error handling, debug, and aux functions for the Beckhoff Axis PLC code.
@@ -1107,6 +1137,9 @@ class BeckhoffAxisPLC(Device):
                    doc='Numeric position of home.')
     user_enable = Cpt(PytmcSignal, 'bUserEnable', io='io', kind='config',
                       doc='Power enable/disable')
+
+    nc_config = Cpt(BeckhoffNCAxisParameters, 'AxisPar:', kind='config',
+                    doc='NC axis configuration parameters for view only.')
 
     set_metadata(err_code, dict(variety='scalar', display_format='hex'))
     set_metadata(cmd_err_reset, dict(variety='command', value=1))

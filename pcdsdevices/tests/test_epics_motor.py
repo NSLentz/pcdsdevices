@@ -633,3 +633,23 @@ def test_limits_setter():
     # Same twice
     mot.limits = (90, 90)
     assert lims() == (0, 0)
+
+
+def test_beckhoff_nc_config_params():
+    """
+    Beckhoff NC config parameters are intended to be included within a beckhoff axis.
+    Check that the PV names chain as expected.
+    """
+    beckhoff_axis = BeckhoffAxis('TST', name='BeckhoffAxis')
+    assert beckhoff_axis.plc.nc_config.max_vel.pvname == 'TST:PLC:AxisPar:MaxVel_RBV'
+    assert beckhoff_axis.plc.nc_config.max_accel.pvname == 'TST:PLC:AxisPar:MaxAccel_RBV'
+    assert beckhoff_axis.plc.nc_config.max_decel.pvname == 'TST:PLC:AxisPar:MaxDecel_RBV'
+    assert beckhoff_axis.plc.nc_config.pos_lag_en.pvname == 'TST:PLC:AxisPar:PosLagEn_RBV'
+    assert beckhoff_axis.plc.nc_config.pos_lag_val.pvname == 'TST:PLC:AxisPar:PosLagVal_RBV'
+    assert beckhoff_axis.plc.nc_config.pos_lag_time.pvname == 'TST:PLC:AxisPar:PosLagTime_RBV'
+    assert beckhoff_axis.plc.nc_config.slim_min_en.pvname == 'TST:PLC:AxisPar:SLimMinEn_RBV'
+    assert beckhoff_axis.plc.nc_config.slim_max_en.pvname == 'TST:PLC:AxisPar:SLimMaxEn_RBV'
+    assert beckhoff_axis.plc.nc_config.slim_min.pvname == 'TST:PLC:AxisPar:SLimMin_RBV'
+    assert beckhoff_axis.plc.nc_config.slim_max.pvname == 'TST:PLC:AxisPar:SLimMax_RBV'
+    assert beckhoff_axis.plc.nc_config.enc_scaling.pvname == 'TST:PLC:AxisPar:EncScaling_RBV'
+    assert beckhoff_axis.plc.nc_config.enc_offset.pvname == 'TST:PLC:AxisPar:EncOffset_RBV'
